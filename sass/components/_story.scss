@@ -1,0 +1,91 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.6);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skewX(0);
+  }
+
+  &__shape {
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    position: relative;
+    border-radius: 50%;
+
+    //chrome bug with weird border...
+    overflow: hidden;
+
+    //if elements are floated and you want to create space, dont mess with margins and such, just use transform:translate;
+    transform: translateX(-3rem) skewX(12deg);
+
+    //feature-query
+    @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+      //50% means here half of width and height (15rem)
+      //works only if element is floated and if height and width are defined!
+      //defines how text (or other things) float around that element!
+      -webkit-shape-outside: circle(50% at 50% 50%);
+      shape-outside: circle(50% at 50% 50%);
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      border-radius: none;
+    }
+
+    @include respond(phone) {
+      transform: translateX(-3rem) skewX(0);
+    }
+  }
+
+  &__img {
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    backface-visibility: hidden;
+    transition: all 0.5s;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    color: $color-white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+    backface-visibility: hidden;
+  }
+
+  &:hover &__caption {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  &:hover &__img {
+    //using filters!
+    filter: blur(3px) brightness(80%);
+    transform: translateX(-4rem) scale(1);
+  }
+}
